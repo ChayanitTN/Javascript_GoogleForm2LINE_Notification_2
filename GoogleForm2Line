@@ -1,5 +1,5 @@
 function generateMessage() {
-  var form = FormApp.openById('1x8JleU7OxOLAsukjslk0u4wP6QgqUZRogtEMwK30s0A');
+  var form = FormApp.openById('**********************************');
   var candidates = form.getResponses();
   
   for (var i = 0; i < candidates.length; i++) {
@@ -14,10 +14,10 @@ class Application {
     this.candidate = candidate;
     this.text = ' ';
     this.tokens = {
-      'software_token' : 'HCPgUGdqsiEFFdDEbEYxC3yWYKgzIVLPH8WTNSv1rqH', 
-      'innovation_token' : 'VFcWalqRmOMWwwKMk57zX9HW63HZlqQY4PMAH75SJ7P', 
-      'sales_token' : 'irG7QdntaHWmT19gieb07ANffbpkXuRwcqCVrpY56gf',
-      'hr_token' : 'Jj06zSJp3vlTudIsEkKFqPyuH47ZSLmwnlnY6ebjHxb'
+      'software_token' : '**********************************', 
+      'innovation_token' : '**********************************', 
+      'sales_token' : '**********************************',
+      'hr_token' : '**********************************'
     };
   } 
 
@@ -35,21 +35,12 @@ class Application {
       token = this.tokens['software_token']
     } else if (answer == 'Innovation Engineer') { 
       token = this.tokens['innovation_token']
-    } else { token = this.tokens['sales_token']
-    }
+    } else if (answer == 'Sales' || answer == 'Customer Service') { token = this.tokens['sales_token']
+    } else {token = null}
 
     var payload = {
       'message': this.text,
     };
-
-    var options = {
-      'method' : 'post',
-      'headers' : {'Authorization': "Bearer " + token},
-      'contentType': 'application/x-www-form-urlencoded',
-      'payload' : payload
-      };
-      var response = UrlFetchApp.fetch("https://notify-api.line.me/api/notify", options);
-
     var optionHR = {
       'method' : 'post',
       'headers' : {'Authorization': "Bearer " + this.tokens['hr_token']},
@@ -57,6 +48,17 @@ class Application {
       'payload' : payload
       };
       var response = UrlFetchApp.fetch("https://notify-api.line.me/api/notify", optionHR);
+
+    if (token !== null){
+      var options = {
+        'method' : 'post',
+        'headers' : {'Authorization': "Bearer " + token},
+        'contentType': 'application/x-www-form-urlencoded',
+        'payload' : payload
+        };
+        var response = UrlFetchApp.fetch("https://notify-api.line.me/api/notify", options);
+    }  
+    
 
     } //  submit
   } //class application
